@@ -2,10 +2,6 @@
  * @plugindesc Calculates the distance between specified 
  * coordinates, events or the player.
  * @author Feldherren
- *
- * @param Item Value Variable
- * @desc ID of variable in which distance calculated by plugin command will be stored.
- * @default 1
  */ 
 (function(){
 	function calculateDistance(aX, aY, bX, bY) 
@@ -55,6 +51,8 @@
 		
 		return eventID
 	}
+	
+	console.log("Test")
 
 	var FELD_DistCalc_aliasPluginCommand = Game_Interpreter.prototype.pluginCommand;
 
@@ -70,7 +68,10 @@
 		// {
 			// calculateInventoryValue($gameParty.inventory());
 		// }
-		if (command == "CALCULATEDISTANCE" && args[0] != null && args[1] != null && args[2] != null)
+		
+		console.log("Plugin command detected")
+		
+		if (command == "CALCULATEDISTANCE" && args[0] != null && args[1] != null)
 		{
 			// arg 0: variable id to drop result into
 			// arg 1: player/coords/event [id/name] A
@@ -84,8 +85,9 @@
 			// eventid:i
 			// eventname:n
 			// optional, assume target is player if not supplied?
+			console.log("Plugin command CALCULATEDISTANCE detected")
 
-			var variable = args[0];
+			var variable = parseInt(args[0]);
 			
 			var aX = 0;
 			var aY = 0;
@@ -97,8 +99,8 @@
 			if (targetA == "player")
 			{
 				var playerCoords = getPlayerCoords();
-				aX = playerCoords[0];
-				aY = playerCoords[1];
+				aX = parseInt(playerCoords[0]);
+				aY = parseInt(playerCoords[1]);
 			}
 			else
 			{
@@ -107,20 +109,20 @@
 				if (targetA == "coord")
 				{
 					var coords = valueA.split(",");
-					aX = coords[0];
-					aY = coords[1];
+					aX = parseInt(coords[0]);
+					aY = parseInt(coords[1]);
 				}
 				else if (targetA == "eventid")
 				{
 					var coords = getEventCoords(valueA);
-					aX = coords[0];
-					aY = coords[1];
+					aX = parseInt(coords[0]);
+					aY = parseInt(coords[1]);
 				}
 				else if (targetA == "eventname")
 				{
 					var coords = getEventCoords(getEventID(valueA));
-					aX = coords[0];
-					aY = coords[1];
+					aX = parseInt(coords[0]);
+					aY = parseInt(coords[1]);
 				}
 			}
 			
@@ -131,8 +133,8 @@
 				if (targetB == "player")
 				{
 					var playerCoords = getPlayerCoords();
-					bX = playerCoords[0];
-					bY = playerCoords[1];
+					bX = parseInt(playerCoords[0]);
+					bY = parseInt(playerCoords[1]);
 				}
 				else
 				{
@@ -141,20 +143,20 @@
 					if (targetB == "coord")
 					{
 						var coords = valueB.split(",");
-						aX = coords[0];
-						aY = coords[1];
+						aX = parseInt(coords[0]);
+						aY = parseInt(coords[1]);
 					}
 					else if (targetB == "eventid")
 					{
 						var coords = getEventCoords(valueB);
-						aX = coords[0];
-						aY = coords[1];
+						aX = parseInt(coords[0]);
+						aY = parseInt(coords[1]);
 					}
 					else if (targetB == "eventname")
 					{
 						var coords = getEventCoords(getEventID(valueB));
-						aX = coords[0];
-						aY = coords[1];
+						aX = parseInt(coords[0]);
+						aY = parseInt(coords[1]);
 					}
 				}
 			}
@@ -162,11 +164,11 @@
 			{
 				// nothing was supplied, so assume they want to check distance to the player
 				var playerCoords = getPlayerCoords();
-				bX = playerCoords[0];
-				bY = playerCoords[1];
+				bX = parseInt(playerCoords[0]);
+				bY = parseInt(playerCoords[1]);
 			}
 			
-			$gameVariables.setVariable(variable, calculateDistance(aX, aY, bX, bY));
+			$gameVariables.setValue(variable, calculateDistance(aX, aY, bX, bY));
 		}
 	}
 })();
